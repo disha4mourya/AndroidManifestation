@@ -3,12 +3,16 @@ package com.example.androidmanifestation;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.androidmanifestation.database.TaskEntity;
+
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -20,6 +24,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private static final String DATE_FORMAT="dd/MM/yyyy";
     final private TaskClickListener mTaskClickListener;
     private Context mContext;
+    private List<TaskEntity> taskEntityList;
     private SimpleDateFormat simpleDateFormat=new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
     TaskAdapter(Context context,TaskClickListener taskClickListener){
@@ -36,16 +41,33 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int i) {
 
-        taskViewHolder.tvDescription.setText("");
-        taskViewHolder.tvCreatedTime.setText("");
-        taskViewHolder.tvPriority.setText("");
+        TaskEntity taskEntity=taskEntityList.get(i);
+        String description=taskEntity.getDescription();
+        int priority=taskEntity.getPriority();
+        String priorityStr= String.valueOf(priority);
+        String updatedAt=simpleDateFormat.format(taskEntity.getUpdatedAt());
+
+        taskViewHolder.tvDescription.setText(description);
+        taskViewHolder.tvCreatedTime.setText(updatedAt);
+        taskViewHolder.tvPriority.setText(priorityStr);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (taskEntityList==null){
+            return 0;
+        }
+        return taskEntityList.size();
     }
 
+    private List<TaskEntity> getTasks(){
+        return taskEntityList;
+    }
+
+    void setTasks(List<TaskEntity> taskEntities){
+        taskEntityList=taskEntities;
+        notifyDataSetChanged();
+    }
     public interface TaskClickListener{
         void onTaskClickListener(int taskId);
     }
