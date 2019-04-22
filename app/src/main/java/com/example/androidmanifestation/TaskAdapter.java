@@ -82,11 +82,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             tvDescription=itemView.findViewById(R.id.tvDescription);
             tvCreatedTime=itemView.findViewById(R.id.tvCreatedTime);
             tvPriority=itemView.findViewById(R.id.tvPriority);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
+            int taskId=taskEntityList.get(getAdapterPosition()).getId();
+            mTaskClickListener.onTaskClickListener(taskId);
         }
     }
 }
