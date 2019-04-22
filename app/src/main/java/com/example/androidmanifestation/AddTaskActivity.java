@@ -1,6 +1,9 @@
 package com.example.androidmanifestation;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,17 +58,12 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SAVED_TASK_ID)) {
             taskId = intent.getIntExtra(SAVED_TASK_ID, DEFAULT_TASK_ID);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            final LiveData<TaskEntity> task = mDb.taskDao().loadTaskById(taskId);
+            task.observe(this, new Observer<TaskEntity>() {
                 @Override
-                public void run() {
-                    final TaskEntity taskEntity = mDb.taskDao().loadTaskById(taskId);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            populateUI(taskEntity);
-                        }
-                    });
+                public void onChanged(@Nullable TaskEntity taskEntry) {
+                    task.removeObserver(this);
+                    populateUI(taskEntry);
                 }
             });
         }

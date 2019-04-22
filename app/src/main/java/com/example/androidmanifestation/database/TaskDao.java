@@ -1,5 +1,6 @@
 package com.example.androidmanifestation.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface TaskDao {
 
     @Query("SELECT * FROM task ORDER BY priority")
-    List<TaskEntity> loadAllTasks();
+    LiveData<List<TaskEntity>> loadAllTasks();
 
     @Insert
     void insertTask(TaskEntity taskEntity);
@@ -25,6 +26,6 @@ public interface TaskDao {
     void deleteTask(TaskEntity taskEntity);
 
     @Query("SELECT * FROM task WHERE id=:id")
-    TaskEntity loadTaskById(int id);
+    LiveData<TaskEntity> loadTaskById(int id);
 
 }

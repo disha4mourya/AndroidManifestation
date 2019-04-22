@@ -1,13 +1,17 @@
 package com.example.androidmanifestation;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.androidmanifestation.database.AppDatabase;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
         setFabClickListener();
         setAdapterOnRecyclerView();
         setTouchHelperToDeleteTask();
+        retrieveTaskList();
     }
 
     private void setTouchHelperToDeleteTask() {
@@ -63,16 +68,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
     }
 
     private void retrieveTaskList() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+
+        LiveData<List<TaskEntity>> tasks = mDb.taskDao().loadAllTasks();
+        tasks.observe(this, new Observer<List<TaskEntity>>() {
             @Override
-            public void run() {
-                final List<TaskEntity> taskEntityList = mDb.taskDao().loadAllTasks();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        taskAdapter.setTasks(taskEntityList);
-                    }
-                });
+            public void onChanged(@Nullable List<TaskEntity> taskEntries) {
+                taskAdapter.setTasks(taskEntries);
             }
         });
     }
