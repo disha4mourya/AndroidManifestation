@@ -26,8 +26,8 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final int PRIORITY_MEDIUM = 2;
     public static final int PRIORITY_LOW = 3;
 
-    public static final String SAVED_TASK_ID="savedTaskId";
-    private int taskId=-1;
+    public static final String SAVED_TASK_ID = "savedTaskId";
+    private int taskId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,13 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void getIntentData() {
-        Intent intent=getIntent();
-        if (intent!=null&&intent.hasExtra(SAVED_TASK_ID)){
-            taskId=intent.getIntExtra(SAVED_TASK_ID,-1);
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(SAVED_TASK_ID)) {
+            taskId = intent.getIntExtra(SAVED_TASK_ID, -1);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    final TaskEntity taskEntity=mDb.taskDao().loadTaskById(taskId);
+                    final TaskEntity taskEntity = mDb.taskDao().loadTaskById(taskId);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -61,9 +61,12 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void populateUI(TaskEntity taskEntity) {
-        if (taskEntity==null){ return;}
+        if (taskEntity == null) {
+            return;
+        }
         edtTaskDescription.setText(taskEntity.getDescription());
-         setPriorityInViews(taskEntity.getPriority());
+        setPriorityInViews(taskEntity.getPriority());
+        btnAddTask.setText(this.getString(R.string.update_task));
     }
 
     public void setPriorityInViews(int priority) {
@@ -78,6 +81,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 ((RadioGroup) findViewById(R.id.rgPriority)).check(R.id.rbLow);
         }
     }
+
     private void setClickListenerOnAddTask() {
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +100,12 @@ public class AddTaskActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDb.taskDao().insertTask(taskEntity);
+                if (taskId == -1) {
+                    mDb.taskDao().insertTask(taskEntity);
+                } else {
+                    taskEntity.setId(taskId);
+                    mDb.taskDao().updateTask(taskEntity);
+                }
             }
         });
 
