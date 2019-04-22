@@ -1,11 +1,13 @@
 package com.example.androidmanifestation;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.example.androidmanifestation.database.AppDatabase;
@@ -29,11 +31,38 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
         initialSetup();
         setFabClickListener();
         setAdapterOnRecyclerView();
+        setTouchHelperToDeleteTask();
+    }
+
+    private void setTouchHelperToDeleteTask() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position=viewHolder.getAdapterPosition();
+                        List<TaskEntity> taskEntities=taskAdapter.getTasks();
+                        mDb.taskDao().deleteTask(taskEntities.get(position));
+                        retrieveTaskList();
+                    }
+                });
+            }
+        }).attachToRecyclerView(rvTasks);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        retrieveTaskList();
+    }
+
+    private void retrieveTaskList() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

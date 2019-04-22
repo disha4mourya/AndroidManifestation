@@ -60,7 +60,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskEntityList.size();
     }
 
-    private List<TaskEntity> getTasks(){
+    List<TaskEntity> getTasks(){
         return taskEntityList;
     }
 

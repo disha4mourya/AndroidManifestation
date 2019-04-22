@@ -57,6 +57,8 @@ public class AddTaskActivity extends AppCompatActivity {
                 mDb.taskDao().insertTask(taskEntity);
             }
         });
+
+        finish();
     }
 
     public int getPriorityFromViews() {
