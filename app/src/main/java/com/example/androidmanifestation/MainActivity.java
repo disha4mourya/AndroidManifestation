@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.androidmanifestation.database.AppDatabase;
@@ -65,6 +67,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
     protected void onResume() {
         super.onResume();
         retrieveTaskList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_server_call_options:
+            {
+                Intent intent=new Intent(MainActivity.this,ServerCallOptions.class);
+                startActivity(intent);
+            }
+        }
+        return true;
     }
 
     private void retrieveTaskList() {
