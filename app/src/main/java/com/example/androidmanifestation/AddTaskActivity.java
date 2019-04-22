@@ -27,7 +27,9 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final int PRIORITY_LOW = 3;
 
     public static final String SAVED_TASK_ID = "savedTaskId";
-    private int taskId = -1;
+    private static final int DEFAULT_TASK_ID = -1;
+
+    private int taskId = DEFAULT_TASK_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +37,24 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         mDb = AppDatabase.getsInstance(getApplicationContext());
+        if (savedInstanceState != null && savedInstanceState.containsKey(SAVED_TASK_ID)) {
+            taskId = savedInstanceState.getInt(SAVED_TASK_ID, DEFAULT_TASK_ID);
+        }
         initialSetup();
         setClickListenerOnAddTask();
         getIntentData();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVED_TASK_ID, taskId);
+        super.onSaveInstanceState(outState);
+    }
+
     private void getIntentData() {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SAVED_TASK_ID)) {
-            taskId = intent.getIntExtra(SAVED_TASK_ID, -1);
+            taskId = intent.getIntExtra(SAVED_TASK_ID, DEFAULT_TASK_ID);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -100,7 +111,7 @@ public class AddTaskActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (taskId == -1) {
+                if (taskId == DEFAULT_TASK_ID) {
                     mDb.taskDao().insertTask(taskEntity);
                 } else {
                     taskEntity.setId(taskId);
