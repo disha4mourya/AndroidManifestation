@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".server_calls.LoopjCallActivity"></activity>
+        <activity android:name=".server_calls.LoopjCallActivity"/>
         <activity android:name=".server_calls.NoLibraryCallActivity" />
+        <activity android:name=".server_calls.VolleyServerCall"/>
         <activity android:name=".ServerCallOptions" />
         <activity android:name=".AddTaskActivity" />
         <activity android:name=".MainActivity">
