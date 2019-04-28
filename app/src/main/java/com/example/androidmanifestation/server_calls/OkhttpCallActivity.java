@@ -88,64 +88,14 @@ public class OkhttpCallActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            SongsListResult songsListResult=response.body();
+                            SongsListResult songsListResult = new Gson().fromJson(response.body().charStream(), SongsListResult.class);
+                            List<SongsEntity> songsEntityList = songsListResult.getResults();
+
+                            // SongsListResult songsListResult = response.body();
                             Toast.makeText(mContext, "dataGot" + response.body().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "SongListSize" + songsEntityList.size(), Toast.LENGTH_SHORT).show();
+                            songsAdapter.setSongs(songsEntityList);
 
-                            if (!response.equals("")) {
-                                List<SongsEntity> songsEntityList = new ArrayList<>();
-
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response.toString());
-                                    JSONArray jsonArray = jsonObject.getJSONArray("results");
-
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        SongsEntity songsEntity = new SongsEntity();
-                                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                        if (jsonObject1.has("trackName")) {
-                                            songsEntity.setTrackName(jsonObject1.getString("trackName"));
-                                        }
-                                        if (jsonObject1.has("collectionName")) {
-                                            songsEntity.setCollectionName(jsonObject1.getString("collectionName"));
-                                        }
-
-                                        if (jsonObject1.has("artworkUrl100")) {
-                                            songsEntity.setArtworkUrl100(jsonObject1.getString("artworkUrl100"));
-                                        }
-
-                                        if (jsonObject1.has("trackTimeMillis")) {
-                                            songsEntity.setTrackTimeMillis(jsonObject1.getString("trackTimeMillis"));
-                                        }
-
-                                        if (jsonObject1.has("artistName")) {
-                                            songsEntity.setArtistName(jsonObject1.getString("artistName"));
-                                        }
-                                        if (jsonObject1.has("collectionPrice")) {
-                                            songsEntity.setCollectionPrice(jsonObject1.getString("collectionPrice"));
-                                        }
-                                        if (jsonObject1.has("trackPrice")) {
-                                            songsEntity.setTrackPrice(jsonObject1.getString("trackPrice"));
-                                        }
-                                        if (jsonObject1.has("releaseDate")) {
-                                            songsEntity.setReleaseDate(jsonObject1.getString("releaseDate"));
-                                        }
-                                        if (jsonObject1.has("trackCensoredName")) {
-                                            songsEntity.setTrackCensoredName(jsonObject1.getString("trackCensoredName"));
-                                        }
-                                        if (jsonObject1.has("collectionViewUrl")) {
-                                            songsEntity.setCollectionViewUrl(jsonObject1.getString("collectionViewUrl"));
-                                        }
-                                        if (jsonObject1.has("artistViewUrl")) {
-                                            songsEntity.setArtistViewUrl(jsonObject1.getString("artistViewUrl"));
-                                        }
-                                        songsEntityList.add(songsEntity);
-                                    }
-
-
-                                    songsAdapter.setSongs(songsEntityList);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
                         }
                     });
                 }
@@ -153,56 +103,5 @@ public class OkhttpCallActivity extends AppCompatActivity {
         });
     }
 
-
-    private class FetchClinics extends AsyncTask<Void, Integer, String> {
-        private OkHttpClient client = new OkHttpClient();
-        String serresponse = "";
-        ProgressDialog progress;
-
-        protected void onPreExecute() {
-            progress = new ProgressDialog(mContext);
-            progress.setCancelable(false);
-            progress.setMessage(Html
-                    .fromHtml("<b>Fetching songs list</b><br/>Please Wait..."));
-            progress.setCanceledOnTouchOutside(false);
-            progress.show();
-        }
-
-        protected String doInBackground(Void... arg0) {
-
-            Request request = new Request.Builder()
-                    .url(SONGS_LIST_URL)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    serresponse = response.body().string();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return serresponse;
-        }
-
-
-        protected void onPostExecute(String result) {
-            progress.dismiss();
-            if (!serresponse.equals("")) { //Response is not empty
-                // Toast.makeText(context, serresponse, Toast.LENGTH_SHORT).show();
-
-
-                    String separate[] = serresponse.split("XDX");
-                    String clinicArray = separate[1];
-
-                    JsonReader reader = new JsonReader(new StringReader(clinicArray));
-                    reader.setLenient(true);
-
-            }
-        }
-
-    }
 }
 
