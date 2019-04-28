@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.androidmanifestation.databinding.ActivityServerCallOptionsBinding;
+import com.example.androidmanifestation.server_calls.LoopjCallActivity;
 import com.example.androidmanifestation.server_calls.NoLibraryCallActivity;
 
 public class ServerCallOptions extends AppCompatActivity implements View.OnClickListener {
@@ -34,6 +35,8 @@ public class ServerCallOptions extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.btnLoopj: {
+                Intent intent = new Intent(this, LoopjCallActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.btnVolley: {
