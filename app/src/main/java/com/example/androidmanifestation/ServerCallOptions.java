@@ -11,6 +11,7 @@ import com.example.androidmanifestation.server_calls.LoopjCallActivity;
 import com.example.androidmanifestation.server_calls.NoLibraryCallActivity;
 import com.example.androidmanifestation.server_calls.OkhttpCallActivity;
 import com.example.androidmanifestation.server_calls.VolleyServerCall;
+import com.example.androidmanifestation.server_calls.retro_call.RetroCallActivity;
 
 public class ServerCallOptions extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,6 +53,8 @@ public class ServerCallOptions extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.btnRetrofit: {
+                Intent intent = new Intent(this, RetroCallActivity.class);
+                startActivity(intent);
                 break;
             }
         }

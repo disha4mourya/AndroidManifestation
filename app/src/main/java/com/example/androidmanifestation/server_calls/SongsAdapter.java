@@ -20,11 +20,11 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
     private List<SongsEntity> songsEntityList;
     private Context context;
 
-    SongsAdapter(Context context) {
+    public SongsAdapter(Context context) {
         this.context = context;
     }
 
-    void setSongs(List<SongsEntity> songsEntities) {
+    public void setSongs(List<SongsEntity> songsEntities) {
         this.songsEntityList = songsEntities;
         notifyDataSetChanged();
     }
