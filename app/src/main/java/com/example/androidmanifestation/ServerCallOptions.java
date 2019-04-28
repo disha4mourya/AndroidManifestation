@@ -9,6 +9,7 @@ import android.view.View;
 import com.example.androidmanifestation.databinding.ActivityServerCallOptionsBinding;
 import com.example.androidmanifestation.server_calls.LoopjCallActivity;
 import com.example.androidmanifestation.server_calls.NoLibraryCallActivity;
+import com.example.androidmanifestation.server_calls.OkhttpCallActivity;
 import com.example.androidmanifestation.server_calls.VolleyServerCall;
 
 public class ServerCallOptions extends AppCompatActivity implements View.OnClickListener {
@@ -46,6 +47,8 @@ public class ServerCallOptions extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.btnOkhttp: {
+                Intent intent = new Intent(this, OkhttpCallActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.btnRetrofit: {
