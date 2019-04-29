@@ -1,9 +1,9 @@
 package com.example.androidmanifestation.aac_todo;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.AndroidViewModel;
-import android.util.Log;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.androidmanifestation.database.AppDatabase;
 import com.example.androidmanifestation.database.TaskEntity;

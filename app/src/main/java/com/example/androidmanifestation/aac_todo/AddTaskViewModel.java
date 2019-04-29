@@ -1,7 +1,8 @@
 package com.example.androidmanifestation.aac_todo;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.androidmanifestation.database.AppDatabase;
 import com.example.androidmanifestation.database.TaskEntity;

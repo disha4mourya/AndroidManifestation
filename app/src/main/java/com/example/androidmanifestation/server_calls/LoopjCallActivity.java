@@ -3,11 +3,13 @@ package com.example.androidmanifestation.server_calls;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.entity.SongsEntity;
 import com.loopj.android.http.AsyncHttpClient;

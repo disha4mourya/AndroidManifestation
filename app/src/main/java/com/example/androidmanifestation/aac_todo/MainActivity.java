@@ -1,25 +1,26 @@
 package com.example.androidmanifestation.aac_todo;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.database.AppDatabase;
 import com.example.androidmanifestation.database.TaskEntity;
 import com.example.androidmanifestation.server_calls.ServerCallOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -68,18 +69,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
                         int position = viewHolder.getAdapterPosition();
                         List<TaskEntity> taskEntities = taskAdapter.getTasks();
                         mDb.taskDao().deleteTask(taskEntities.get(position));
-                        retrieveTaskList();
                     }
                 });
             }
         }).attachToRecyclerView(rvTasks);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        retrieveTaskList();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,17 +89,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
             startActivity(intent);
         }
         return true;
-    }
-
-    private void retrieveTaskList() {
-
-        LiveData<List<TaskEntity>> tasks = mDb.taskDao().loadAllTasks();
-        tasks.observe(this, new Observer<List<TaskEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TaskEntity> taskEntries) {
-                taskAdapter.setTasks(taskEntries);
-            }
-        });
     }
 
     private void setAdapterOnRecyclerView() {
