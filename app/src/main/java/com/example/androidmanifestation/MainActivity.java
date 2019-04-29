@@ -2,6 +2,7 @@ package com.example.androidmanifestation;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,11 +39,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
         setFabClickListener();
         setAdapterOnRecyclerView();
         setTouchHelperToDeleteTask();
-        retrieveTaskList();
+        setUpViewModel();
+    }
+
+    private void setUpViewModel() {
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getTaskList().observe(this, new Observer<List<TaskEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<TaskEntity> taskEntities) {
+                taskAdapter.setTasks(taskEntities);
+            }
+        });
     }
 
     private void setTouchHelperToDeleteTask() {
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -53,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        int position=viewHolder.getAdapterPosition();
-                        List<TaskEntity> taskEntities=taskAdapter.getTasks();
+                        int position = viewHolder.getAdapterPosition();
+                        List<TaskEntity> taskEntities = taskAdapter.getTasks();
                         mDb.taskDao().deleteTask(taskEntities.get(position));
                         retrieveTaskList();
                     }
@@ -71,18 +82,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu,menu);
+        getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_server_call_options:
-            {
-                Intent intent=new Intent(MainActivity.this,ServerCallOptions.class);
-                startActivity(intent);
-            }
+        if (item.getItemId() == R.id.action_server_call_options) {
+            Intent intent = new Intent(MainActivity.this, ServerCallOptions.class);
+            startActivity(intent);
         }
         return true;
     }
@@ -121,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.TaskC
 
     @Override
     public void onTaskClickListener(int taskId) {
-        Intent intent=new Intent(MainActivity.this,AddTaskActivity.class);
-        intent.putExtra(AddTaskActivity.SAVED_TASK_ID,taskId);
+        Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+        intent.putExtra(AddTaskActivity.SAVED_TASK_ID, taskId);
         startActivity(intent);
     }
 }
