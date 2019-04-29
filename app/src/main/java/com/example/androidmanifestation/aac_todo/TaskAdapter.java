@@ -28,7 +28,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private List<TaskEntity> taskEntityList;
     private SimpleDateFormat simpleDateFormat=new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
-    TaskAdapter(Context context,TaskClickListener taskClickListener){
+    public TaskAdapter(Context context,TaskClickListener taskClickListener){
         mContext=context;
         mTaskClickListener=taskClickListener;
     }
@@ -61,11 +61,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskEntityList.size();
     }
 
-    List<TaskEntity> getTasks(){
+    public List<TaskEntity> getTasks(){
         return taskEntityList;
     }
 
-    void setTasks(List<TaskEntity> taskEntities){
+    public void setTasks(List<TaskEntity> taskEntities){
         taskEntityList=taskEntities;
         notifyDataSetChanged();
     }

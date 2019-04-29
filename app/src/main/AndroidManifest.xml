@@ -19,6 +19,7 @@
         <activity android:name=".server_calls.OkhttpCallActivity"/>
         <activity android:name=".server_calls.retro_call.RetroCallActivity"/>
         <activity android:name=".server_calls.retro_call.RetroViewModelThroughCall"/>
+        <activity android:name=".aac_todo.old_way_activity.OldWayMainActivity"/>
         <activity android:name=".server_calls.ServerCallOptions" />
         <activity android:name=".aac_todo.AddTaskActivity" />
         <activity android:name=".aac_todo.MainActivity">
