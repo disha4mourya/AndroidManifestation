@@ -1,18 +1,18 @@
-package com.example.androidmanifestation;
+package com.example.androidmanifestation.aac_todo;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
+import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.database.AppDatabase;
 import com.example.androidmanifestation.database.TaskEntity;
 
@@ -58,12 +58,14 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SAVED_TASK_ID)) {
             taskId = intent.getIntExtra(SAVED_TASK_ID, DEFAULT_TASK_ID);
-            final LiveData<TaskEntity> task = mDb.taskDao().loadTaskById(taskId);
-            task.observe(this, new Observer<TaskEntity>() {
+
+            AddTaskViewModelFactory addTaskViewModelFactory = new AddTaskViewModelFactory(mDb, taskId);
+            final AddTaskViewModel addTaskViewModel = ViewModelProviders.of(this, addTaskViewModelFactory).get(AddTaskViewModel.class);
+            addTaskViewModel.getTaskById().observe(this, new Observer<TaskEntity>() {
                 @Override
-                public void onChanged(@Nullable TaskEntity taskEntry) {
-                    task.removeObserver(this);
-                    populateUI(taskEntry);
+                public void onChanged(@Nullable TaskEntity taskEntity) {
+                    addTaskViewModel.getTaskById().removeObserver(this);
+                    populateUI(taskEntity);
                 }
             });
         }

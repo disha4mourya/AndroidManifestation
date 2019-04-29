@@ -18,9 +18,9 @@
         <activity android:name=".server_calls.VolleyServerCall"/>
         <activity android:name=".server_calls.OkhttpCallActivity"/>
         <activity android:name=".server_calls.retro_call.RetroCallActivity"/>
-        <activity android:name=".ServerCallOptions" />
-        <activity android:name=".AddTaskActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".server_calls.ServerCallOptions" />
+        <activity android:name=".aac_todo.AddTaskActivity" />
+        <activity android:name=".aac_todo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

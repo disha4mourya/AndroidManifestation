@@ -1,4 +1,4 @@
-package com.example.androidmanifestation;
+package com.example.androidmanifestation.aac_todo;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -12,13 +12,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.database.AppDatabase;
 import com.example.androidmanifestation.database.TaskEntity;
+import com.example.androidmanifestation.server_calls.ServerCallOptions;
 
 import java.util.List;
 

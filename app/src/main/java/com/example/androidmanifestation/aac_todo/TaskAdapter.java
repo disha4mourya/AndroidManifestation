@@ -1,14 +1,14 @@
-package com.example.androidmanifestation;
+package com.example.androidmanifestation.aac_todo;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.database.TaskEntity;
 
 import java.text.SimpleDateFormat;

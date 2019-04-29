@@ -1,4 +1,4 @@
-package com.example.androidmanifestation;
+package com.example.androidmanifestation.server_calls;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.androidmanifestation.R;
 import com.example.androidmanifestation.databinding.ActivityServerCallOptionsBinding;
 import com.example.androidmanifestation.server_calls.LoopjCallActivity;
 import com.example.androidmanifestation.server_calls.NoLibraryCallActivity;
