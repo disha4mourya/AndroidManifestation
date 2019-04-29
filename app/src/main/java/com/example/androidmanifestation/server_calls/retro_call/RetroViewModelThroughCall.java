@@ -5,22 +5,23 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidmanifestation.R;
-import com.example.androidmanifestation.entity.SongsListResult;
+import com.example.androidmanifestation.entity.SongsEntity;
 import com.example.androidmanifestation.server_calls.SongsAdapter;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.List;
 
-public class RetroCallActivity extends AppCompatActivity {
+public class RetroViewModelThroughCall extends AppCompatActivity {
 
     Context mContext;
     private SongsAdapter songsAdapter;
     RecyclerView rvSongList;
+    private String TAG=RetroViewModelThroughCall.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +38,16 @@ public class RetroCallActivity extends AppCompatActivity {
         songsAdapter = new SongsAdapter(this);
         rvSongList.setAdapter(songsAdapter);
 
-        loadSongList();
+        setUpViewModel();
     }
 
-    private void loadSongList() {
+    private void setUpViewModel() {
 
-        RetrofitServices retrofitServices = RetrofitInstance.getRetrofitInstance().create(RetrofitServices.class);
-        Call<SongsListResult> call = retrofitServices.getAllSongs();
-        call.enqueue(new Callback<SongsListResult>() {
+        RetroCallViewModel retroCallViewModel = ViewModelProviders.of(this).get(RetroCallViewModel.class);
+        retroCallViewModel.getSongs().observe(this, new Observer<List<SongsEntity>>() {
             @Override
-            public void onResponse(Call<SongsListResult> call, Response<SongsListResult> response) {
-                songsAdapter.setSongs(response.body().getResults());
-            }
-
-            @Override
-            public void onFailure(Call<SongsListResult> call, Throwable t) {
-                Log.d("TAG", "is" + t.getMessage());
+            public void onChanged(List<SongsEntity> songsEntities) {
+                songsAdapter.setSongs(songsEntities);
             }
         });
     }

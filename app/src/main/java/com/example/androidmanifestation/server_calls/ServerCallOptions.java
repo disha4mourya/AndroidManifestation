@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidmanifestation.R;
 
 import com.example.androidmanifestation.server_calls.retro_call.RetroCallActivity;
+import com.example.androidmanifestation.server_calls.retro_call.RetroViewModelThroughCall;
 
 public class ServerCallOptions extends AppCompatActivity implements View.OnClickListener {
 
@@ -19,23 +20,26 @@ public class ServerCallOptions extends AppCompatActivity implements View.OnClick
     Button btnVolley;
     Button btnOkhttp;
     Button btnRetrofit;
+    Button btnRetrofitViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_server_call_options);
+        setContentView(R.layout.activity_server_call_options);
 
-        btnNoLibrary=findViewById(R.id.btnNoLibrary);
-        btnLoopj=findViewById(R.id.btnLoopj);
-        btnVolley=findViewById(R.id.btnVolley);
-        btnOkhttp=findViewById(R.id.btnOkhttp);
-        btnRetrofit=findViewById(R.id.btnRetrofit);
+        btnNoLibrary = findViewById(R.id.btnNoLibrary);
+        btnLoopj = findViewById(R.id.btnLoopj);
+        btnVolley = findViewById(R.id.btnVolley);
+        btnOkhttp = findViewById(R.id.btnOkhttp);
+        btnRetrofit = findViewById(R.id.btnRetrofit);
+        btnRetrofitViewModel = findViewById(R.id.btnRetrofitViewModel);
 
         btnNoLibrary.setOnClickListener(this);
         btnLoopj.setOnClickListener(this);
         btnVolley.setOnClickListener(this);
         btnOkhttp.setOnClickListener(this);
         btnRetrofit.setOnClickListener(this);
+        btnRetrofitViewModel.setOnClickListener(this);
     }
 
     @Override
@@ -63,6 +67,11 @@ public class ServerCallOptions extends AppCompatActivity implements View.OnClick
             }
             case R.id.btnRetrofit: {
                 Intent intent = new Intent(this, RetroCallActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.btnRetrofitViewModel: {
+                Intent intent = new Intent(this, RetroViewModelThroughCall.class);
                 startActivity(intent);
                 break;
             }
